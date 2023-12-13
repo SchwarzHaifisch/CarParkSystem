@@ -1,4 +1,4 @@
-package pl.coderslab.Car;
+package pl.coderslab.car;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

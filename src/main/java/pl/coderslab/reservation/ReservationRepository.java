@@ -1,4 +1,4 @@
-package pl.coderslab.Reservation;
+package pl.coderslab.reservation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

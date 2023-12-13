@@ -1,15 +1,15 @@
-package pl.coderslab.Car;
+package pl.coderslab.car;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.coderslab.Client.Client;
-import pl.coderslab.Reservation.Reservation;
+import pl.coderslab.client.Client;
+import pl.coderslab.reservation.Reservation;
 
 import java.util.List;
 
 @Entity
-@Table(name = "cars")
+@Table(name = "car")
 @Getter
 @Setter
 public class Car {
@@ -17,10 +17,13 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 20)
     private String brand;
+    @Column(length = 20)
     private String model;
+    @Column(length = 9)
     private String licencePlates;
-
+    private boolean ifInvoice;
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
