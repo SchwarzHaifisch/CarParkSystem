@@ -19,11 +19,8 @@ public class Car {
     private Long id;
     @Column(length = 20)
     private String brand;
-    @Column(length = 20)
-    private String model;
     @Column(length = 9)
     private String licencePlates;
-    private boolean ifInvoice;
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
