@@ -28,7 +28,7 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    @Column(length = 15)
+    @Column(length = 40)
     private String status;
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime created;
@@ -44,4 +44,6 @@ public class Reservation {
     private void prePersist() {
         this.created = LocalDateTime.now();
     }
+
+
 }

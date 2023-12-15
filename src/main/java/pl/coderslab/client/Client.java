@@ -34,4 +34,5 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
 }

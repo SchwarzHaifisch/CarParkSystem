@@ -24,4 +24,5 @@ public class Company {
     public String address;
     @OneToMany(mappedBy = "company")
     public List<Client> client;
+
 }

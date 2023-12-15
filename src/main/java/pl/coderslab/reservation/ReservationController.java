@@ -15,7 +15,6 @@ import pl.coderslab.company.Company;
 import pl.coderslab.company.CompanyRepository;
 import pl.coderslab.finalReservationForm.FinalReservationForm;
 
-import java.awt.print.Book;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +39,7 @@ public class ReservationController {
 
     @RequestMapping("/newReservation")
     public String selectDate() {
-        return "newReservationChooseDate";
+        return "reservation/newReservationChooseDate";
     }
 
     @PostMapping("/saveDate")
@@ -50,7 +49,7 @@ public class ReservationController {
         if (outParking == null || enterParking == null || outParking.isEmpty() || enterParking.isEmpty()) {
             String parkingError = "Proszę wprowadzić poprawne daty";
             model.addAttribute("parkingError", parkingError);
-            return "newReservationChooseDate";
+            return "reservation/newReservationChooseDate";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -60,7 +59,7 @@ public class ReservationController {
         if (outParking1.isBefore(enterParking1) || enterParking1.isBefore(LocalDateTime.now())) {
             String parkingError = "Proszę wprowadzić poprawne daty";
             model.addAttribute("parkingError", parkingError);
-            return "newReservationChooseDate";
+            return "reservation/newReservationChooseDate";
         }
 
         Reservation reservation = new Reservation();
@@ -77,7 +76,7 @@ public class ReservationController {
         model.addAttribute("outParking", outParking1);
         model.addAttribute("price", price);
         model.addAttribute("carBrands", carBrands);
-        return "newReservationDetails";
+        return "reservation/newReservationDetails";
     }
 
 
@@ -91,7 +90,7 @@ public class ReservationController {
             Long price = Duration.between(finalReservationForm.getEnterParking(), finalReservationForm.getOutParking()).toDays() * 15;
             model.addAttribute("price", price);
             model.addAttribute("validationErrors", bindingResult.getAllErrors());
-            return "newReservationDetails";
+            return "reservation/newReservationDetails";
         }
         Client client = new Client();
         Company company = new Company();
@@ -116,6 +115,6 @@ public class ReservationController {
         String paymentMethod = finalReservationForm.getPaymentMethod();
         String status = "Niepotwierdzona";
         reservationRepository.updateFieldsById(reservationId, status, savedCar.getId(), savedClient.getId(), paymentMethod);
-        return "homePage";
+        return "reservation/finalPage";
     }
 }
