@@ -75,7 +75,7 @@
                                     <td class="col">Opłacone</td>
                                 </c:if>
                                 <c:if test="${reservation.payment == 'onsite'}">
-                                    <td class="col">Pobrać opłatę</td>
+                                    <td class="col">Pobrać opłatę ${reservation.price} zł</td>
                                 </c:if>
                                 <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
                                     <div>${reservationNotes[status.index]}</div>

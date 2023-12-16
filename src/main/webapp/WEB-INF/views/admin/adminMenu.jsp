@@ -17,19 +17,19 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/app/recipe/list">
+            <a class="nav-link" href="/admin/outParking">
                 <span>Odznacz wyjazd klienta</span>
                 <i class="fas fa-angle-right"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/app/plan/list">
+            <a class="nav-link" href="/admin/confirmReservations">
                 <span>Rezerwacje do potwierdzenia</span>
                 <i class="fas fa-angle-right"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/admin/allReservations">
                 <span>Rezerwacje wszystkie</span>
                 <i class="fas fa-angle-right"></i>
             </a>
@@ -37,12 +37,6 @@
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <span>Historia rezerwacji</span>
-                <i class="fas fa-angle-right"></i>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span>Rezerwacje trwające poza terminem</span>
                 <i class="fas fa-angle-right"></i>
             </a>
         </li>

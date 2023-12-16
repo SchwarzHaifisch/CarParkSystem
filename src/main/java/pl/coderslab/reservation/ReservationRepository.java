@@ -22,5 +22,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Transactional
     @Query(value = "UPDATE reservations SET status = :field1 WHERE id = :id",
             nativeQuery = true)
-    void updateStatusAfterEnter(@Param("id") Long id, @Param("field1") String field1);
+    void updateStatus(@Param("id") Long id, @Param("field1") String field1);
 }

@@ -61,7 +61,7 @@ public class AdminController {
         }
         int counterToConfirm = 0;
         for (Reservation reservation : reservationList) {
-            if ("Niepotwierdzona".equals(reservation.getStatus()) && reservation.getEnterParking().isAfter(LocalDateTime.now())) {
+            if ("Niepotwierdzona".equals(reservation.getStatus()) && Duration.between(LocalDateTime.now(),reservation.getEnterParking()).toDays() >= 0) {
                 counterToConfirm++;
             }
         }
@@ -81,15 +81,31 @@ public class AdminController {
 
     @PostMapping("/markEnter")
     public String clientHasEnterdParking(@RequestParam("id") Long id) {
-        reservationRepository.updateStatusAfterEnter(id, "W trakcie realizacji");
+        reservationRepository.updateStatus(id, "W trakcie realizacji");
         return "redirect:/admin/main";
     }
 
+    @PostMapping("/confirmed")
+    public String confirmFutureReservation(@RequestParam("idCon") Long id) {
+        reservationRepository.updateStatus(id, "Potwierdzona");
+        return "redirect:/admin/confirmReservations";
+    }
+    @PostMapping("/denied")
+    public String deniedFutureReservation(@RequestParam("idDen") Long id) {
+        reservationRepository.updateStatus(id, "Odrzucona");
+        return "redirect:/admin/confirmReservations";
+    }
     @PostMapping("/edit")
     public String redirectToEditReservation(@RequestParam("idEdit") Long id, Model model) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow();
         model.addAttribute("reservation", reservation);
         return "/admin/adminEditReservation";
+    }
+
+    @PostMapping("/clientOutOfParking")
+    public String clientOutOfParking(@RequestParam("idOfPark") Long id) {
+        reservationRepository.updateStatus(id, "Zakończona");
+        return "redirect:/admin/outParking";
     }
 
     @PostMapping("/editConfirm")
@@ -141,6 +157,41 @@ public class AdminController {
         return "redirect:/admin/edit";
     }
 
+    @GetMapping("/confirmReservations")
+    public String redirectToConfirmReservation(Model model) {
+        List<Reservation> reservationList = new ArrayList<>();
+        for (Reservation reservation : reservationRepository.findAll()){
+            if ("Niepotwierdzona".equals(reservation.getStatus()) && Duration.between(LocalDateTime.now(),reservation.getEnterParking()).toDays() >= 0){
+                reservationList.add(reservation);
+            }
+        }
+        model.addAttribute("reservationsList",reservationList);
+        return "/admin/adminConfirmReservations";
+    }
+
+    @GetMapping("/outParking")
+    public String clientGoOutOfTheParkingRedirect(Model model) {
+        List<Reservation> reservationList = new ArrayList<>();
+        for (Reservation reservation : reservationRepository.findAll()){
+            if ("W trakcie realizacji".equals(reservation.getStatus())){
+                reservationList.add(reservation);
+            }
+        }
+        model.addAttribute("reservationsList",reservationList);
+        return "/admin/adminMarkClientGoOutOfParking";
+    }
+
+    @GetMapping("/allReservations")
+    public String getAllReservations(Model model) {
+        List<Reservation> reservationList = new ArrayList<>();
+        for (Reservation reservation : reservationRepository.findAll()){
+            if (reservation.getStatus() != null){
+                reservationList.add(reservation);
+            }
+        }
+        model.addAttribute("reservationsList",reservationList);
+        return "/admin/adminShowAllReservations";
+    }
     private String generateReservationNotes(Reservation reservation) {
         String notes = "";
         if ("onsite".equals(reservation.getPayment())) {
@@ -159,5 +210,4 @@ public class AdminController {
         }
         return notes;
     }
-
 }
