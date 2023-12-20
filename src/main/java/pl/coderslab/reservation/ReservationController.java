@@ -92,9 +92,16 @@ public class ReservationController {
     public String createFinalReservation(@Valid FinalReservationForm finalReservationForm,
                                          BindingResult bindingResult,
                                          Model model) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        model.addAttribute("reservationId",finalReservationForm.getReservationId());
+        List<CarBrand> carBrands = carBrandsRepository.findAll();
+        model.addAttribute("carBrands", carBrands);
+        if (finalReservationForm.getPhoneNumber().length() > 9){
+            model.addAttribute("phone","Proszę wprowadzić poprawny numer telefonu");
+        }
         if (bindingResult.hasErrors()) {
-            model.addAttribute("outParking", finalReservationForm.getOutParking());
-            model.addAttribute("enterParking", finalReservationForm.getEnterParking());
+            model.addAttribute("outParking", finalReservationForm.getOutParking().format(formatter));
+            model.addAttribute("enterParking", finalReservationForm.getEnterParking().format(formatter));
 
             if (finalReservationForm.getEnterParking() != null && finalReservationForm.getOutParking() != null) {
                 Long price = Duration.between(finalReservationForm.getEnterParking(), finalReservationForm.getOutParking()).toDays() * 15;
@@ -132,6 +139,7 @@ public class ReservationController {
         reservationHistory.setClient(client);
         reservationHistory.setCompany(company);
         reservationHistory.setReservation(reservationRepository.findById(reservationId).orElseThrow());
+        reservationHistoryRepository.save(reservationHistory);
         return "reservation/finalPage";
     }
 

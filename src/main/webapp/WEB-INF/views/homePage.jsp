@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<%@ include file="header.jsp" %>
+<%@ include file="header.jsp"%>
 <section class="padding-large bg-light d-flex align-items-center justify-content-center">
     <div id="carouselExampleControls" class="carousel slide main-slider" data-ride="carousel">
         <div class="carousel-inner container">
@@ -68,7 +68,7 @@
         </div>
         <div class="ml-4 align-self-center">
             <button class="btn btn-color rounded-0 mt-4 pl-4 pr-4">
-                <a href="/location">Sprawdź</a>
+                <a href="/contact">Sprawdź</a>
             </button>
         </div>
     </div>

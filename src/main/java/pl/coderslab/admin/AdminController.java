@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -96,8 +97,6 @@ public class AdminController {
         model.addAttribute("reservations", today);
         return "admin/adminDashboard";
     }
-
-
 
 
     @PostMapping("/markEnter")
@@ -183,40 +182,39 @@ public class AdminController {
         companyRepository.save(company);
         model.addAttribute("errors", errors);
         redirectAttributes.addFlashAttribute("successMessage", "Edycja została zapisana.");
-        return "redirect:/admin/edit?idEdit="+planId;
+        return "redirect:/admin/edit?idEdit=" + planId;
     }
 
-//    @RequestMapping("/confirmReservations")
+    //    @RequestMapping("/confirmReservations")
 //    public String redirectToConfirmReservation(Model model) {
 //        List<Reservation> reservationList = reservationRepository.getReservationUnConfirmed();
 //        model.addAttribute("reservationsList", reservationList);
 //        return "admin/adminConfirmReservations";
 //    }
-@RequestMapping("/confirmReservations")
-public String redirectToConfirmReservation(Model model) {
-    List<Reservation> reservationList = reservationRepository.getReservationUnConfirmed();
+    @RequestMapping("/confirmReservations")
+    public String redirectToConfirmReservation(Model model) {
+        List<Reservation> reservationList = reservationRepository.getReservationUnConfirmed();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    reservationList.forEach(reservation -> {
-        if (reservation.getEnterParking() != null) {
-            reservation.setEnterParkingFormatted(reservation.getEnterParking().format(formatter));
-        }
+        reservationList.forEach(reservation -> {
+            if (reservation.getEnterParking() != null) {
+                reservation.setEnterParkingFormatted(reservation.getEnterParking().format(formatter));
+            }
 
-        if (reservation.getOutParking() != null) {
-            reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
-        }
-    });
-    reservationList.sort(Comparator.comparing(reservation -> {
-        if (reservation.getEnterParking() != null) {
-            return reservation.getEnterParking();
-        }
-        return LocalDateTime.MIN;
-    }));
-    model.addAttribute("reservationsList", reservationList);
-    return "admin/adminConfirmReservations";
-}
-
+            if (reservation.getOutParking() != null) {
+                reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
+            }
+        });
+        reservationList.sort(Comparator.comparing(reservation -> {
+            if (reservation.getEnterParking() != null) {
+                return reservation.getEnterParking();
+            }
+            return LocalDateTime.MIN;
+        }));
+        model.addAttribute("reservationsList", reservationList);
+        return "admin/adminConfirmReservations";
+    }
 
 
     @GetMapping("/outParking")
@@ -257,39 +255,68 @@ public String redirectToConfirmReservation(Model model) {
     }
 
 
+    //    @GetMapping("/searchCarToMarkOut")
+//    public String findCarByNumberPlater(@RequestParam("searchLicensePlate") String licensePlate, Model model){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        Car car = carRepository.findByLicensePlate(licensePlate).orElseThrow();
+//        List<Reservation> reservationList = new ArrayList<>();
+//        reservationList.add(reservationRepository.findByCarId(car.getId()).orElseThrow());
+//        reservationList.forEach(reservation -> {
+//            if (reservation.getOutParking() != null) {
+//                reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
+//            }
+//        });
+//        model.addAttribute("reservationsList", reservationList);
+//        return "admin/adminMarkClientGoOutOfParking";
+//    }
     @GetMapping("/searchCarToMarkOut")
-    public String findCarByNumberPlater(@RequestParam("searchLicensePlate") String licensePlate, Model model){
+    public String findCarByNumberPlater(@RequestParam("searchLicensePlate") String licensePlate, Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Car car = carRepository.findByLicensePlate(licensePlate).orElseThrow();
-        List<Reservation> reservationList = new ArrayList<>();
-        reservationList.add(reservationRepository.findByCarId(car.getId()).orElseThrow());
-        reservationList.forEach(reservation -> {
-            if (reservation.getOutParking() != null) {
-                reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
+        Optional<Car> optionalCar = carRepository.findByLicensePlate(licensePlate);
+        if (optionalCar.isPresent()) {
+            Car car = optionalCar.get();
+            Optional<Reservation> optionalReservation = reservationRepository.findByCarId(car.getId());
+            if (optionalReservation.isPresent()) {
+                Reservation reservation = optionalReservation.get();
+                if (reservation.getOutParking() != null) {
+                    reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
+                }
+                List<Reservation> reservationList = new ArrayList<>();
+                reservationList.add(reservation);
+                model.addAttribute("reservationsList", reservationList);
+            } else {
+                model.addAttribute("reservationsList", new ArrayList<>());
             }
-        });
-        model.addAttribute("reservationsList", reservationList);
+        } else {
+            model.addAttribute("reservationsList", new ArrayList<>());
+        }
         return "admin/adminMarkClientGoOutOfParking";
     }
+
     @GetMapping("/history")
-    public String showHistory(Model model){
+    public String showHistory(Model model) {
         List<ReservationHistory> reservationList = new ArrayList<>();
         for (ReservationHistory reservation : reservationHistoryRepository.findAll()) {
             if (reservation.getId() != null) {
                 reservationList.add(reservation);
             }
         }
-        model.addAttribute("reservationList",reservationList);
+        model.addAttribute("reservationList", reservationList);
         return "admin/adminReservationsHistory";
     }
 
     @GetMapping("/showDetails")
-    public String showDetailsOfHistoryRecord(@RequestParam("idDet") Long id, Model model){
+    public String showDetailsOfHistoryRecord(@RequestParam("idDet") Long id, Model model) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         ReservationHistory reservationHistory = reservationHistoryRepository.findById(id).orElseThrow();
         Reservation reservation = reservationRepository.findById(reservationHistory.getId()).orElseThrow();
+        reservation.setEnterParkingFormatted(reservation.getEnterParking().format(formatter));
+        reservation.setOutParkingFormatted(reservation.getOutParking().format(formatter));
+        reservation.setCreatedFormatted(reservation.getCreated().format(formatter));
         model.addAttribute("reservationHistory", reservation);
         return "admin/adminReservationHistoryDetails";
     }
+
     private String generateReservationNotes(Reservation reservation) {
         String notes = "";
         if (reservation.getClient() != null) {

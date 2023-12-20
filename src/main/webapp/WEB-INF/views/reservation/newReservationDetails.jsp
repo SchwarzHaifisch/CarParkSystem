@@ -105,6 +105,13 @@
                     </div>
                 </c:if>
 
+                <c:if test="${not empty phone}">
+                    <div style="color: red;">
+                        <c:forEach var="phone" items="${phone}">
+                            ${phone}<br/>
+                        </c:forEach>
+                    </div>
+                </c:if>
                 <button type="submit" class="btn btn-success">Zapisz</button>
             </form>
         </div>

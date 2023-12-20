@@ -11,10 +11,7 @@
                 <a class="nav-link color-header" href="/reservation/newReservation">Złóż rezerwację</a>
             </li>
             <li class="nav-item ml-4">
-                <a class="nav-link" href="/location">Jak do nas dojechać?</a>
-            </li>
-            <li class="nav-item ml-4">
-                <a class="nav-link disabled" href="/contact">Kontakt</a>
+                <a class="nav-link disabled" href="/contact">Kontakt/Jak do nas dojechać</a>
             </li>
         </ul>
     </nav>

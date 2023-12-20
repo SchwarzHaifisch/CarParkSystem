@@ -12,6 +12,6 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
 
     @Transactional
-    @Query(value = "SELECT * from car where lower(licence_plates)=lower(:field1);", nativeQuery = true)
+    @Query(value = "SELECT * from car where lower(licence_plates)=lower(:field1)", nativeQuery = true)
     Optional<Car> findByLicensePlate(@Param("field1") String field1);
 }

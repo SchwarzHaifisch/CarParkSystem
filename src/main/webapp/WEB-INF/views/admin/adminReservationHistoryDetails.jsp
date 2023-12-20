@@ -44,26 +44,23 @@
                         </div>
                         <div class="form-group row">
                             <span class="col-sm-2 label-size col-form-label">
-                                Data utworzenia: ${reservationHistory.created}
+                                Data utworzenia: ${reservationHistory.createdFormatted}
                             </span>
-                            <div class="col-sm-10">
-                                <p class="schedules-text">${reservation.getCreated()}</p>
-                            </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm label-size col-form-label">
-                                Data Przyjazdu: ${reservationHistory.enterParking}
+                                Data Przyjazdu: ${reservationHistory.enterParkingFormatted}
                             </label>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm label-size col-form-label">
-                                Data Wyjazdu: ${reservationHistory.outParking}
+                                Data Wyjazdu: ${reservationHistory.outParkingFormatted}
                             </label>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm label-size col-form-label">
-                                Kwota: ${reservationHistory.price}
+                                Kwota: ${reservationHistory.price} zł
                             </label>
                         </div>
                         <div class="form-group row">

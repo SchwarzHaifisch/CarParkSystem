@@ -42,12 +42,12 @@
                 </div>
                 <div class="row p-3">
                     <div class="col">
-                        <form action="/admin/searchCarToMarkOut" method="get" class="form-inline">
+                        <form action="<c:url value="/admin/searchCarToMarkOut"/>" method="get" class="form-inline">
                             <div class="form-group mb-2">
                                 <label for="searchLicensePlate" class="sr-only">Numer rejestracyjny</label>
                                 <input type="text" class="form-control" id="searchLicensePlate" name="searchLicensePlate" placeholder="Numer rejestracyjny">
                             </div>
-                            <button type="button" class="btn btn-primary mb-2 ml-2">Szukaj</button>
+                            <button type="submit" class="btn btn-primary mb-2 ml-2">Szukaj</button>
                         </form>
                     </div>
                 </div>

@@ -32,6 +32,8 @@ public class Reservation {
     private String status;
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime created;
+    @Transient
+    private String createdFormatted;
     private LocalDateTime enterParking;
     @Transient
     private String enterParkingFormatted;
