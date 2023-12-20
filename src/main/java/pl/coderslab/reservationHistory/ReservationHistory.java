@@ -36,9 +36,6 @@ public class ReservationHistory {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-    @Column(name = "reservation_status")
-    private String reservationStatus;
-
     @Column(name = "created")
     private LocalDateTime created;
 

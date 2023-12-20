@@ -14,6 +14,8 @@ import pl.coderslab.client.ClientRepository;
 import pl.coderslab.company.Company;
 import pl.coderslab.company.CompanyRepository;
 import pl.coderslab.finalReservationForm.FinalReservationForm;
+import pl.coderslab.reservationHistory.ReservationHistory;
+import pl.coderslab.reservationHistory.ReservationHistoryRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,13 +30,15 @@ public class ReservationController {
     private final CompanyRepository companyRepository;
     private final ClientRepository clientRepository;
     private final CarRepository carRepository;
+    private final ReservationHistoryRepository reservationHistoryRepository;
 
-    public ReservationController(ReservationRepository reservationRepository, CarBrandsRepository carBrandsRepository, CompanyRepository companyRepository, ClientRepository clientRepository, CarRepository carRepository) {
+    public ReservationController(ReservationRepository reservationRepository, CarBrandsRepository carBrandsRepository, CompanyRepository companyRepository, ClientRepository clientRepository, CarRepository carRepository, ReservationHistoryRepository reservationHistoryRepository) {
         this.reservationRepository = reservationRepository;
         this.carBrandsRepository = carBrandsRepository;
         this.companyRepository = companyRepository;
         this.clientRepository = clientRepository;
         this.carRepository = carRepository;
+        this.reservationHistoryRepository = reservationHistoryRepository;
     }
 
     @RequestMapping("/newReservation")
@@ -52,6 +56,7 @@ public class ReservationController {
             return "reservation/newReservationChooseDate";
         }
 
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime enterParking1 = LocalDateTime.parse(enterParking, formatter);
         LocalDateTime outParking1 = LocalDateTime.parse(outParking, formatter);
@@ -61,7 +66,11 @@ public class ReservationController {
             model.addAttribute("parkingError", parkingError);
             return "reservation/newReservationChooseDate";
         }
-
+        if (Duration.between(enterParking1,outParking1).toDays() == 0) {
+            String parkingError = "Proszę wprowadzić poprawne daty";
+            model.addAttribute("parkingError", parkingError);
+            return "reservation/newReservationChooseDate";
+        }
         Reservation reservation = new Reservation();
         reservation.setEnterParking(enterParking1);
         reservation.setOutParking(outParking1);
@@ -70,10 +79,9 @@ public class ReservationController {
         Reservation savedReservation = reservationRepository.save(reservation);
         Long reservationId = savedReservation.getId();
         List<CarBrand> carBrands = carBrandsRepository.findAll();
-        System.out.println(carBrands);
         model.addAttribute("reservationId", reservationId);
-        model.addAttribute("enterParking", enterParking1);
-        model.addAttribute("outParking", outParking1);
+        model.addAttribute("enterParking", enterParking1.format(formatter));
+        model.addAttribute("outParking", outParking1.format(formatter));
         model.addAttribute("price", price);
         model.addAttribute("carBrands", carBrands);
         return "reservation/newReservationDetails";
@@ -87,14 +95,20 @@ public class ReservationController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("outParking", finalReservationForm.getOutParking());
             model.addAttribute("enterParking", finalReservationForm.getEnterParking());
-            Long price = Duration.between(finalReservationForm.getEnterParking(), finalReservationForm.getOutParking()).toDays() * 15;
-            model.addAttribute("price", price);
+
+            if (finalReservationForm.getEnterParking() != null && finalReservationForm.getOutParking() != null) {
+                Long price = Duration.between(finalReservationForm.getEnterParking(), finalReservationForm.getOutParking()).toDays() * 15;
+                model.addAttribute("price", price);
+            }
+
             model.addAttribute("validationErrors", bindingResult.getAllErrors());
             return "reservation/newReservationDetails";
         }
+
         Client client = new Client();
         Company company = new Company();
         Car car = new Car();
+        ReservationHistory reservationHistory = new ReservationHistory();
         client.setFirstName(finalReservationForm.getFirstName());
         client.setLastName(finalReservationForm.getLastName());
         client.setEmail(finalReservationForm.getEmail());
@@ -106,7 +120,6 @@ public class ReservationController {
         car.setBrand(finalReservationForm.getCarBrand());
         car.setLicencePlates(finalReservationForm.getNumberPlates());
         Company savedCompany = companyRepository.save(company);
-        Long companyId = savedCompany.getId();
         client.setCompany(savedCompany);
         Client savedClient = clientRepository.save(client);
         car.setClient(client);
@@ -115,6 +128,11 @@ public class ReservationController {
         String paymentMethod = finalReservationForm.getPaymentMethod();
         String status = "Niepotwierdzona";
         reservationRepository.updateFieldsById(reservationId, status, savedCar.getId(), savedClient.getId(), paymentMethod);
+        reservationHistory.setCar(car);
+        reservationHistory.setClient(client);
+        reservationHistory.setCompany(company);
+        reservationHistory.setReservation(reservationRepository.findById(reservationId).orElseThrow());
         return "reservation/finalPage";
     }
+
 }

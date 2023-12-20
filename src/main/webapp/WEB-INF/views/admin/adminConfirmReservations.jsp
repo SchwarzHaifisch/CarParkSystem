@@ -20,6 +20,11 @@
 <%@include file="adminHeader.jsp" %>
 
 <body>
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success">
+            ${successMessage}
+    </div>
+</c:if>
 
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
@@ -55,8 +60,8 @@
                                 <tbody class="text-color-lighter">
                                 <c:forEach var="reservation" items="${reservationsList}">
                                     <tr class="d-flex">
-                                        <td class="col">${reservation.enterParking}</td>
-                                        <td class="col">${reservation.outParking}</td>
+                                        <td class="col">${reservation.enterParkingFormatted}</td>
+                                        <td class="col">${reservation.outParkingFormatted}</td>
                                         <td class="col">${reservation.client.firstName}</td>
                                         <td class="col">${reservation.client.lastName}</td>
                                         <td class="col">${reservation.client.phoneNumber}</td>

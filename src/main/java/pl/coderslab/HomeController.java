@@ -19,4 +19,8 @@ public class HomeController {
         model.addAttribute("onLoginPage", true);
         return "login";
     }
+    @GetMapping("/contact")
+    public String contact(){
+        return "contactPage";
+    }
 }

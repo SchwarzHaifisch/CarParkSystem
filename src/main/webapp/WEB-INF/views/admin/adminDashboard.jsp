@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +22,11 @@
 <%@ include file="adminHeader.jsp" %>
 
 <body>
-
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success">
+            ${successMessage}
+    </div>
+</c:if>
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
         <%@include file="adminMenu.jsp" %>
@@ -58,7 +63,6 @@
                             <th class="col">Marka samochodu</th>
                             <th class="col">Numer rejestracyjny</th>
                             <th class="col">Płatność</th>
-                            <th class="col-2">Uwagi</th>
                             <th class="col">Akcje</th>
 
                         </tr>
@@ -66,7 +70,7 @@
                         <tbody class="text-color-lighter">
                         <c:forEach var="reservation" items="${reservations}">
                             <tr class="d-flex">
-                                <td class="col">${reservation.enterParking}</td>
+                                <td class="col">${reservation.enterParkingFormatted}</td>
                                 <td class="col-2">${reservation.client.firstName}</td>
                                 <td class="col-2">${reservation.client.lastName}</td>
                                 <td class="col">${reservation.car.brand}</td>
@@ -77,9 +81,6 @@
                                 <c:if test="${reservation.payment == 'onsite'}">
                                     <td class="col">Pobrać opłatę ${reservation.price} zł</td>
                                 </c:if>
-                                <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                                    <div>${reservationNotes}</div>
-                                </td>
                                 <td class="col d-flex align-items-center justify-content-center flex-wrap">
                                     <form action="/admin/markEnter" method="post">
                                         <input type="hidden" id="id" name="id" value="${reservation.id}"/>

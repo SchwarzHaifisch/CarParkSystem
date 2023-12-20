@@ -21,6 +21,11 @@
 <%@include file="adminHeader.jsp" %>
 
 <body>
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success">
+            ${successMessage}
+    </div>
+</c:if>
 
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
@@ -37,12 +42,12 @@
                 </div>
                 <div class="row p-3">
                     <div class="col">
-                        <form action="#" method="get" class="form-inline">
+                        <form action="/admin/searchCarToMarkOut" method="get" class="form-inline">
                             <div class="form-group mb-2">
                                 <label for="searchLicensePlate" class="sr-only">Numer rejestracyjny</label>
-                                <input type="text" class="form-control" id="searchLicensePlate" placeholder="Numer rejestracyjny">
+                                <input type="text" class="form-control" id="searchLicensePlate" name="searchLicensePlate" placeholder="Numer rejestracyjny">
                             </div>
-                            <button type="button" class="btn btn-primary mb-2 ml-2" onclick="searchTable()">Szukaj</button>
+                            <button type="button" class="btn btn-primary mb-2 ml-2">Szukaj</button>
                         </form>
                     </div>
                 </div>
@@ -64,7 +69,7 @@
                                 <tbody class="text-color-lighter">
                                 <c:forEach var="reservation" items="${reservationsList}">
                                     <tr class="d-flex" id="${reservation.id}">
-                                        <td class="col">${reservation.outParking}</td>
+                                        <td class="col">${reservation.outParkingFormatted}</td>
                                         <td class="col">${reservation.client.firstName}</td>
                                         <td class="col">${reservation.client.lastName}</td>
                                         <td class="col">${reservation.client.phoneNumber}</td>
@@ -87,31 +92,5 @@
         </div>
     </div>
 </section>
-
-<script>
-    function searchTable() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchLicensePlate");
-        filter = input.value.toUpperCase();
-        table = document.getElementsByTagName("table")[0];
-        tr = table.getElementsByTagName("tr");
-        tr[0].style.display = "none";
-        document.getElementById("12").style.display = "none";
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[5];
-            console.log("dupa1")
-            if (td) {
-                console.log("dupa2")
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = '';
-                } else {
-                    tr[i].remove();
-                }
-            }
-        }
-    }
-
-</script>
 </body>
 </html>

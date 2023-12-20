@@ -20,7 +20,11 @@
 <%@include file="adminHeader.jsp" %>
 
 <body>
-
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success">
+            ${successMessage}
+    </div>
+</c:if>
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
 

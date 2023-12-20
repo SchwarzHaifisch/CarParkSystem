@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edycja rezerwacji</title>
+    <title>Historia rezerwacji</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
@@ -30,7 +30,7 @@
             <div class="dashboard-content border-dashed p-3 m-4">
                 <div class="row border-bottom border-3 p-1 m-1">
                     <div class="col noPadding">
-                        <h3 class="color-header text-uppercase">Wszystkie rezerwacje</h3>
+                        <h3 class="color-header text-uppercase">Historia rezerwacji</h3>
                     </div>
                     <div class="col d-flex justify-content-end mb-2 noPadding">
                         <a href="<c:url value="/admin/main"/>" class="btn btn-warning rounded-0">Powrót</a>
@@ -44,39 +44,26 @@
                                 <thead>
                                 <tr class="d-flex">
                                     <th class="col">Id</th>
-                                    <th class="col">Godzina Przyjazdu</th>
-                                    <th class="col">Godzina Wyjazdu</th>
-                                    <th class="col">Imię</th>
-                                    <th class="col">Nazwisko</th>
-                                    <th class="col">Marka samochodu</th>
-                                    <th class="col">Numer rejestracyjny</th>
-                                    <th class="col">Płatność</th>
-                                    <th class="col">Status</th>
+                                    <th class="col">Numer Rejestracyjny</th>
+                                    <th class="col">Nazwisko Klienta</th>
+                                    <th class="col">Nazwa firmy</th>
+                                    <th class="col">Numer Rezerwacji</th>
                                     <th class="col">Akcje</th>
 
                                 </tr>
                                 </thead>
                                 <tbody class="text-color-lighter">
-                                <c:forEach var="reservation" items="${reservationsList}">
+                                <c:forEach var="reservationHistory" items="${reservationList}">
                                     <tr class="d-flex">
-                                        <td class="col">${reservation.id}</td>
-                                        <td class="col">${reservation.enterParkingFormatted}</td>
-                                        <td class="col">${reservation.outParkingFormatted}</td>
-                                        <td class="col">${reservation.client.firstName}</td>
-                                        <td class="col">${reservation.client.lastName}</td>
-                                        <td class="col">${reservation.car.brand}</td>
-                                        <td class="col">${reservation.car.licencePlates}</td>
-                                        <c:if test="${reservation.payment == 'online'}">
-                                            <td class="col">Opłacone</td>
-                                        </c:if>
-                                        <c:if test="${reservation.payment == 'onsite'}">
-                                            <td class="col">Płatność na miejscu ${reservation.price} zł</td>
-                                        </c:if>
-                                        <td class="col">${reservation.status}</td>
+                                        <td class="col">${reservationHistory.id}</td>
+                                        <td class="col">${reservationHistory.car.licencePlates}</td>
+                                        <td class="col-2">${reservationHistory.client.lastName}</td>
+                                        <td class="col">${reservationHistory.company.name}</td>
+                                        <td class="col">${reservationHistory.reservation.id}</td>
                                         <td class="col d-flex align-items-center justify-content-center flex-wrap">
-                                            <form action="/admin/edit" method="get">
-                                                <input type="hidden" id="idEdit" name="idEdit" value="${reservation.id}"/>
-                                                <button type="submit" class="btn btn-warning rounded-0 text-light m-1">Edytuj</button>
+                                            <form action="/admin/showDetails" method="get">
+                                                <input type="hidden" id="idDet" name="idDet" value="${reservationHistory.id}"/>
+                                                <button type="submit" class="btn btn-warning rounded-0 text-light m-1">Szczegóły</button>
                                             </form>
                                         </td>
                                     </tr>

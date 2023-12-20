@@ -3,16 +3,20 @@ package pl.coderslab.finalReservationForm;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class FinalReservationForm {
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime enterParking;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime outParking;
     private Long reservationId;
     @NotBlank(message = "Proszę wprowadzić poprawne imię")
@@ -29,6 +33,7 @@ public class FinalReservationForm {
     @NotBlank
     private String carBrand;
     @NotBlank(message = "Proszę wprowadzić poprawny numer rejestracyjny")
+    @Size(min=1,max = 10)
     private String numberPlates;
     private String companyName;
     private String companyAdress;

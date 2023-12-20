@@ -33,7 +33,11 @@ public class Reservation {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime created;
     private LocalDateTime enterParking;
+    @Transient
+    private String enterParkingFormatted;
     private LocalDateTime outParking;
+    @Transient
+    private String outParkingFormatted;
     private String payment;
     private Long price;
     @ManyToOne

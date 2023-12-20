@@ -35,7 +35,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/admin/history">
                 <span>Historia rezerwacji</span>
                 <i class="fas fa-angle-right"></i>
             </a>
