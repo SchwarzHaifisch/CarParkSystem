@@ -63,7 +63,7 @@
                                 </thead>
                                 <tbody class="text-color-lighter">
                                 <c:forEach var="reservation" items="${reservationsList}">
-                                    <tr class="d-flex">
+                                    <tr class="d-flex" id="${reservation.id}">
                                         <td class="col">${reservation.outParking}</td>
                                         <td class="col">${reservation.client.firstName}</td>
                                         <td class="col">${reservation.client.lastName}</td>
@@ -95,19 +95,23 @@
         filter = input.value.toUpperCase();
         table = document.getElementsByTagName("table")[0];
         tr = table.getElementsByTagName("tr");
-
+        tr[0].style.display = "none";
+        document.getElementById("12").style.display = "none";
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[5];
+            console.log("dupa1")
             if (td) {
+                console.log("dupa2")
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
+                    tr[i].style.display = '';
                 } else {
-                    tr[i].style.display = "none";
+                    tr[i].remove();
                 }
             }
         }
     }
+
 </script>
 </body>
 </html>

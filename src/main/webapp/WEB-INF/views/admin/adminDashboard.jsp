@@ -78,7 +78,7 @@
                                     <td class="col">Pobrać opłatę ${reservation.price} zł</td>
                                 </c:if>
                                 <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                                    <div>${reservationNotes[status.index]}</div>
+                                    <div>${reservationNotes}</div>
                                 </td>
                                 <td class="col d-flex align-items-center justify-content-center flex-wrap">
                                     <form action="/admin/markEnter" method="post">
@@ -86,7 +86,7 @@
                                         <button type="submit" class="btn btn-warning rounded-0 text-light m-1">Klient przyjechał</button>
                                     </form>
 
-                                    <form action="/admin/edit" method="post">
+                                    <form action="/admin/edit" method="get">
                                         <input type="hidden" id="idEdit" name="idEdit" value="${reservation.id}"/>
                                         <button type="submit" class="btn btn-warning rounded-0 text-light m-1">Edytuj</button>
                                     </form>
