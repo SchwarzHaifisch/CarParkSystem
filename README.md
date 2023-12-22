@@ -43,7 +43,7 @@ To get started with this project, you have to have this points installed on your
 
 To build project:
 
-- Clone the repository: git clone https://github.com/SchwarzHaifisch/CarParkSystem.git
+- Clone the repository: `git clone https://github.com/SchwarzHaifisch/CarParkSystem.git`
 - Find the project
 - Create database: parkingReseravtionSystem
 - Change login and password to database in application.propeties
