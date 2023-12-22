@@ -4,7 +4,7 @@ This project demonstrates the implementation of security using Spring Boot 3.0 a
 
 **Features**
 
-- ****Client reservation with full validation
+- Client reservation with full validation
 - Admin (worker) login page
 - Role-based authentication with Spring Security
 - Logout mechanism
@@ -43,7 +43,7 @@ To get started with this project, you have to have this points installed on your
 
 To build project:
 
-- Clone the repository: git clone <https://github.com/SchwarzHaifisch/CarParkSystem.git>
+- Clone the repository: git clone https://github.com/SchwarzHaifisch/CarParkSystem.git
 - Find the project
 - Create database: parkingReseravtionSystem
 - Change login and password to database in application.propeties
