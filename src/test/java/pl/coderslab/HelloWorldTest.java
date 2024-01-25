@@ -18,11 +18,5 @@
 //        int result = helloWorld.addNumbers(2, 3);
 //        assertEquals(5, result);
 //    }
-//    @Test
-//    public void testToUpperCase() {
-//        HelloWorld helloWorld = new HelloWorld();
-//        String result = helloWorld.toUpperCase("dupa");
-//        assertEquals("DUPA",result);
-//    }
 //}
 //
